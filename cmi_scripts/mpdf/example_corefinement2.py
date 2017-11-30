@@ -3,13 +3,12 @@
 
 '''
 This example will show how to simultaneously refine the atomic and magnetic PDF
-of MnO using SrFit. First, we refine each component separately, then we refine
-them together. Doing it in steps like this can be useful to help the combined
+of MnO using SrFit. First, we refine each component separately, then we refine 
+them together. Doing it in steps like this can be useful to help the combined 
 fit converge more quickly.
 '''
 
 # Import necessary functions
-from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import leastsq
@@ -66,9 +65,9 @@ mnofit.addContribution(totpdf)
 # parameters according to the CIF-loaded space group.
 from diffpy.srfit.structure import constrainAsSpaceGroup
 sgpars = constrainAsSpaceGroup(nucpdf.phase, pcif.spacegroup.short_name)
-print("Space group parameters are:", end=' ')
-print(', '.join([p.name for p in sgpars]))
-print()
+print "Space group parameters are:",
+print ', '.join([p.name for p in sgpars])
+print
 
 # We can now cycle through the parameters and activate them in the recipe as
 # variables
@@ -90,16 +89,16 @@ mnofit.addVar(nucpdf.qdamp, 0.03)
 mnofit.clearFitHooks()
 
 # Initial structural fit
-print("Refine PDF using scipy's least-squares optimizer:")
-print("  variables:", mnofit.names)
-print("  initial values:", mnofit.values)
+print "Refine PDF using scipy's least-squares optimizer:"
+print "  variables:", mnofit.names
+print "  initial values:", mnofit.values
 leastsq(mnofit.residual, mnofit.values)
-print("  final values:", mnofit.values)
-print()
+print "  final values:", mnofit.values
+print
 # Obtain and display the fit results.
 mnoresults = FitResults(mnofit)
-print("FIT RESULTS\n")
-print(mnoresults)
+print "FIT RESULTS\n"
+print mnoresults
 
 # Get the experimental data from the recipe
 r = mnofit.totpdf.profile.x
@@ -148,7 +147,7 @@ def magresidual(p, yexp, mcalc):
 
 p0=[5.0,3.0] # initial parameter values (paraScale, ordScale)
 pOpt=leastsq(magresidual, p0, args=(gdiff, mc))
-print(pOpt)
+print pOpt
 
 magfit = mc.calc(both=True)[2]
 magdiff = gdiff - magfit
@@ -190,15 +189,15 @@ mnofit.addVar(totpdf.parascale,value=mc.paraScale)
 mnofit.addVar(totpdf.ordscale,value=mc.ordScale)
 
 # do the co-refinement
-print("Refine PDF using scipy's least-squares optimizer:")
-print("  variables:", mnofit.names)
-print("  initial values:", mnofit.values)
+print "Refine PDF using scipy's least-squares optimizer:"
+print "  variables:", mnofit.names
+print "  initial values:", mnofit.values
 leastsq(mnofit.residual, mnofit.values)
-print("  final values:", mnofit.values)
-print()
+print "  final values:", mnofit.values
+print
 mnoresults=FitResults(mnofit)
-print("FIT RESULTS\n")
-print(mnoresults)
+print "FIT RESULTS\n"
+print mnoresults
 
 # Get the calculated PDF and compute the difference between the calculated and
 # measured PDF
@@ -223,3 +222,4 @@ ax.set_xlim(xmax=mc.rmax)
 plt.legend()
 
 plt.show()
+
